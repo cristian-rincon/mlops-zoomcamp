@@ -15,7 +15,7 @@ Read the data for January. How many columns are there?
 * 16
 * 17
 * 18
-* 19
+* [x] 19
 
 
 ## Q2. Computing duration
@@ -25,7 +25,7 @@ Now let's compute the `duration` variable. It should contain the duration of a r
 What's the standard deviation of the trips duration in January?
 
 * 32.59
-* 42.59
+* [x] 42.59
 * 52.59
 * 62.59
 
@@ -39,7 +39,7 @@ What fraction of the records left after you dropped the outliers?
 * 90%
 * 92%
 * 95%
-* 98%
+* [x] 98%
 
 
 ## Q4. One-hot encoding
@@ -56,7 +56,7 @@ What's the dimensionality of this matrix (number of columns)?
 * 2
 * 155
 * 345
-* 515
+* [x] 515
 * 715
 
 
