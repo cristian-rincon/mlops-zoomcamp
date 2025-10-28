@@ -80,4 +80,5 @@ def run_data_prep(raw_data_path: str, dest_path: str, dataset: str = "green"):
 
 
 if __name__ == '__main__':
+
     run_data_prep()
