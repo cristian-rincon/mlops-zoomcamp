@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12.9"
 dependencies = [
+    "hyperopt>=0.2.7",
     "jupyterlab>=4.4.9",
     "matplotlib>=3.10.7",
     "mlflow>=3.5.0",
@@ -12,4 +13,5 @@ dependencies = [
     "pyarrow>=21.0.0",
     "scikit-learn>=1.7.2",
     "seaborn>=0.13.2",
+    "xgboost>=3.1.0",
 ]
