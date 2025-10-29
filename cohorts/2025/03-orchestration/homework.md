@@ -11,11 +11,13 @@ or choose a different one for your homework.
 
 What's the name of the orchestrator you chose? 
 
+- **Apache Airflow**
 
 ## Question 2. Version
 
 What's the version of the orchestrator? 
 
+- 3.1.1
 
 ## Question 3. Creating a pipeline
 
