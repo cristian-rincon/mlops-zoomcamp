@@ -1,0 +1,70 @@
+# Generate fernet key using
+# python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+# Then, create an .env file with the line:
+# FERNET_KEY=your_generated_fernet_key
+# Also add POSTGRES_USER, POSTGRES_PASSWORD, and POSTGRES_DB to the .env file.
+# Before running, make sure to create the necessary directories:
+# mkdir -p airflow/dags airflow/logs airflow/plugins mlflow/artifacts
+# And run the following command to initialize the Airflow database:
+# docker-compose run --rm airflow-webserver airflow db migrate
+# Then, run the server with:
+# docker-compose up
+
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.5.1
+    platform: linux/arm64
+    ports:
+      - "5001:5001"
+    environment:
+      - MLFLOW_TRACKING_URI=http://0.0.0.0:5001
+    command: mlflow ui --host 0.0.0.0 --port 5001 --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlflow/artifacts
+    volumes:
+      - ./mlflow/artifacts:/mlflow/artifacts
+      - ./mlflow/mlflow.db:/mlflow/mlflow.db
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+
+  airflow-webserver:
+    image: apache/airflow:3.1.1
+    depends_on:
+      - postgres
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__FERNET_KEY=${FERNET_KEY}
+      - AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=True
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+    ports:
+      - "8080:8080"
+    command: api-server
+
+  airflow-scheduler:
+    image: apache/airflow:3.1.1
+    depends_on:
+      - airflow-webserver
+      - postgres
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__CORE__FERNET_KEY=${FERNET_KEY}
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+    command: scheduler
+
+volumes:
+  postgres-db-volume:
