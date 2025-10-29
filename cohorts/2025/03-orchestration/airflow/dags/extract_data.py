@@ -7,7 +7,7 @@ def download_parquet(taxi_type, year, month, **kwargs):
     url = f"https://d37ci6vzurychx.cloudfront.net/trip-data/{taxi_type}_tripdata_{year}-{month:02d}.parquet"
     local_path = f"/tmp/{taxi_type}_tripdata_{year}-{month:02d}.parquet"
     response = requests.get(url)
-    response.raise_for_status()
+    # response.raise_for_status()
     with open(local_path, "wb") as f:
         f.write(response.content)
     print(f"Downloaded {url} to {local_path}")
@@ -37,3 +37,5 @@ with DAG(
             'month': '{{ params.month }}',
         },
     )
+
+    download_task
