@@ -31,6 +31,8 @@ def extract_data(taxi_type, year, month, **kwargs):
 def count_rows(data_path, **kwargs):
     df = pd.read_parquet(data_path)
     row_count = len(df)
+    print("Question 3: Let's read the March 2023 Yellow taxi trips data.")
+    print("How many rows are there in the dataset?")
     print(f"The file {data_path} has {row_count} rows.")
 
 
@@ -41,7 +43,8 @@ def transform_and_load_data(filename, **kwargs):
     df.duration = df.duration.dt.total_seconds() / 60
 
     df = df[(df.duration >= 1) & (df.duration <= 60)].copy()
-
+    print("Question 4: Let's apply to the data we loaded in question 3.")
+    print("What's the size of the result? ")
     print(f"Filtered data has {len(df)} rows after removing outliers.")
     filtered_path = filename.replace(".parquet", "_filtered.parquet")
     df.to_parquet(filtered_path, index=False)
