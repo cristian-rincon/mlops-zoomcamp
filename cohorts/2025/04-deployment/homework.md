@@ -17,7 +17,7 @@ Run this notebook for the March 2023 data.
 What's the standard deviation of the predicted duration for this dataset?
 
 * 1.24
-* 6.24
+* [x] 6.24
 * 12.28
 * 18.28
 
@@ -50,6 +50,7 @@ What's the size of the output file?
 * 36M
 * 46M
 * 56M
+* [x] 60M
 * 66M
 
 __Note:__ Make sure you use the snippet above for saving the file. It should contain only these two columns. For this question, don't change the
@@ -61,6 +62,15 @@ dtypes of the columns and use `pyarrow`, not `fastparquet`.
 Now let's turn the notebook into a script. 
 
 Which command you need to execute for that?
+
+```bash
+uv run -- jupyter nbconvert starter.ipynb --to script
+
+-- Output
+(2025) ➜  homework git:(04-deployment) ✗ uv run -- jupyter nbconvert starter.ipynb --to script
+[NbConvertApp] Converting notebook starter.ipynb to script
+[NbConvertApp] Writing 2073 bytes to starter.py
+```
 
 
 ## Q4. Virtual environment
@@ -87,7 +97,7 @@ Run the script for April 2023.
 What's the mean predicted duration? 
 
 * 7.29
-* 14.29
+* [x] 14.29
 * 21.29
 * 28.29
 
@@ -132,7 +142,7 @@ for May 2023?
 
 * 0.19
 * 7.24
-* 14.24
+* [x] 14.24
 * 21.19
 
 
