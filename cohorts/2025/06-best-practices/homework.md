@@ -21,6 +21,13 @@ Now we need to create the "main" block from which we'll invoke
 the main function. How does the `if` statement that we use for
 this looks like? 
 
+```python
+if __name__ == '__main__':
+    year = int(sys.argv[1])
+    month = int(sys.argv[2])
+    main(year, month)
+```
+
 
 Hint: after refactoring, check that the code still works. Just run it e.g. for March 2023 and see if it finishes successfully. 
 
@@ -43,6 +50,8 @@ Next, create a folder `tests` and create two files. One will be
 the file with tests. We can name it `test_batch.py`. 
 
 What should be the other file? 
+
+R: `__init__.py`
 
 Hint: to be able to test `batch.py`, we need to be able to
 import it. Without this other file, we won't be able to do it.
@@ -96,7 +105,7 @@ The same is true for Pandas Series. Also, a DataFrame could be turned into a lis
 How many rows should be there in the expected dataframe?
 
 * 1
-* 2
+* [x] 2
 * 3
 * 4
 
@@ -128,7 +137,7 @@ aws s3 ls
 In both cases we should adjust commands for localstack. What option do we need to use for such purposes?
 
 * `--backend-store-uri`
-* `--profile`
+* [x] `--profile`
 * `--endpoint-url`
 * `--version`
 
@@ -221,10 +230,19 @@ df_input.to_parquet(
 
 What's the size of the file?
 
-* 3620
+* [x] 3620
 * 23620
 * 43620
 * 63620
+
+```sh
+➜  homework git:(06-best-practices) ✗ podman exec  homework-localstack-1 awslocal s3 ls nyc-duration --recursive --human-readable --summarize
+2025-11-19 04:43:07    3.5 KiB in/2023-01.parquet
+2025-11-19 04:43:09    1.9 KiB out/2023-01.parquet
+
+Total Objects: 2
+   Total Size: 5.5 KiB
+```
 
 Note: it's important to use the code from the snippet for saving
 the file. Otherwise the size may be different depending on the OS,
@@ -253,9 +271,20 @@ verify the result is correct.
 What's the sum of predicted durations for the test dataframe?
 
 * 13.08
-* 36.28
+* [x] 36.28
 * 69.28
 * 81.08
+
+```sh
+➜  homework git:(06-best-practices) ✗ pipenv run python tests/integration_test.py                           
+Created input file: s3://nyc-duration/in/2023-01.parquet
+predicted mean duration: 18.138625226015364
+Result dataframe:
+     ride_id  predicted_duration
+0  2023/01_0           23.197149
+1  2023/01_1           13.080101
+Sum of predicted durations: 36.27725045203073
+```
 
 
 ## Running the test (ungraded)
